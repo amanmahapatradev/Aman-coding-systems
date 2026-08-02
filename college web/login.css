@@ -1,0 +1,61 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.kali{
+    background-image: url(./images/kaliimg.jpg);
+    background-size: cover;
+    width: 100%;
+    height: 675px;
+    opacity: 0.9;
+}
+
+.login{
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 400px;
+    height: 200px;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.8);
+    text-align: center;
+}
+.info1{
+    position: absolute;
+    top: 30%;
+    left: 100px;
+}
+.info2{
+    position: absolute;
+    top: 40%;
+    left: 43px;
+}
+.name{
+    position: absolute;
+    top: 30%;
+    left: 150px;
+}
+.num{
+    position: absolute;
+    top: 40%;
+    left: 150px;
+}
+.enter{
+    position: absolute;
+    top: 50%;
+    left: 210px;
+    width: 50px;
+    height: 30px;
+    border: 2px solid black;
+    border-radius: 20px;
+}
+.enter:hover {
+    transform: scale(1.08);
+}
+
+.enter {
+    background: linear-gradient(135deg, #3b4fff, #6d7bff);
+}

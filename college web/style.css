@@ -1,0 +1,108 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #07111f, #1c2e4a 45%, #3d2b1f);
+    color: #f5f2e8;
+    min-height: 100vh;
+}
+
+.whole {
+    background: transparent;
+    color: #f5f2e8;
+}
+
+main {
+    padding: 20px;
+}
+
+.top {
+    background: rgba(255, 255, 255, 0.08);
+    /* backdrop-filter: blur(12px); */
+    border: 1px solid rgba(255, 215, 0, 0.35);
+    border-radius: 20px;
+    height: 70px;
+    margin-bottom: 20px;
+    padding: 12px 18px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+}
+
+.logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid #d4af37;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.loginpages {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn1, .btn2 {
+    background: linear-gradient(135deg, #c29b2d, #f2d06b);
+    color: #1d1b16;
+    border: 1px solid #d4af37;
+    border-radius: 999px;
+    padding: 8px 14px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(212, 175, 55, 0.25);
+}
+
+.btn1:hover, .btn2:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+}
+
+.glogin, .wlogin, .gmlogin {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.glogin:hover, .wlogin:hover, .gmlogin:hover {
+    transform: scale(1.08);
+}
+
+.glogin {
+    background: linear-gradient(135deg, #3b4fff, #6d7bff);
+}
+
+.wlogin {
+    background: linear-gradient(135deg, #12b845, #49d97b);
+}
+
+.gmlogin {
+    background: linear-gradient(135deg, #b61d1d, #e24b4b);
+}
+
+.contact-box {
+    max-width: 520px;
+    margin: 40px auto 0;
+    padding: 28px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    /* backdrop-filter: blur(15px); */
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+}
