@@ -1,0 +1,427 @@
+/* ════════════════════════════════════════════════════════════
+   NEON SNAKE – style.css
+   All styling lives here. No inline styles in HTML/JS.
+════════════════════════════════════════════════════════════ */
+
+/* ── 1. CSS Variables (design tokens) ─────────────────────── */
+:root {
+  --bg:          #050b12;          /* near-black canvas bg         */
+  --panel:       #0a1520;          /* card / panel bg              */
+  --border:      #0f2a3d;          /* subtle border                */
+
+  --neon-green:  #39ff14;          /* snake / primary accent       */
+  --neon-cyan:   #00f5ff;          /* secondary accent             */
+  --neon-pink:   #ff2d78;          /* danger / game-over           */
+  --neon-yellow: #ffe600;          /* power-up / badge             */
+  --neon-purple: #bf5fff;          /* obstacle / tertiary          */
+
+  --text:        #c8e6f5;          /* general readable text        */
+  --text-dim:    #4a7a9b;          /* dimmed labels                */
+
+  --font-pixel:  'Press Start 2P', monospace;
+
+  --glow-green:  0 0 8px #39ff14, 0 0 20px #39ff1480, 0 0 40px #39ff1440;
+  --glow-cyan:   0 0 8px #00f5ff, 0 0 20px #00f5ff80, 0 0 40px #00f5ff40;
+  --glow-pink:   0 0 8px #ff2d78, 0 0 20px #ff2d7880, 0 0 40px #ff2d7840;
+
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   16px;
+}
+
+/* ── 2. Reset & Base ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-pixel);
+}
+
+/* ── 3. Wrapper ────────────────────────────────────────────── */
+.wrapper {
+  position: relative;
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ── 4. CRT scanline overlay ──────────────────────────────── */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+  animation: crt-flicker 0.15s infinite;
+}
+@keyframes crt-flicker {
+  0%  { opacity: 1; }
+  97% { opacity: 1; }
+  98% { opacity: 0.92; }
+  100%{ opacity: 1; }
+}
+
+/* ── 5. Screens (start / game / gameover) ─────────────────── */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.96);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.screen.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+/* ── 6. Start Screen ──────────────────────────────────────── */
+.logo {
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  line-height: 1.3;
+  text-align: center;
+  color: var(--neon-green);
+  text-shadow: var(--glow-green);
+  animation: pulse-green 2s ease-in-out infinite;
+}
+.logo span {
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+}
+@keyframes pulse-green {
+  0%,100% { text-shadow: var(--glow-green); }
+  50%     { text-shadow: 0 0 16px #39ff14, 0 0 48px #39ff1490, 0 0 80px #39ff1450; }
+}
+
+.menu-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: min(420px, 94vw);
+  box-shadow: inset 0 0 30px rgba(0,245,255,0.04), 0 4px 40px rgba(0,0,0,0.7);
+}
+
+.difficulty-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pixel-label {
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.btn-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ── 7. Buttons ───────────────────────────────────────────── */
+button { cursor: pointer; font-family: var(--font-pixel); border: none; outline: none; }
+
+/* Difficulty / mode toggle buttons */
+.btn-diff {
+  flex: 1;
+  padding: 10px 6px;
+  font-size: 0.5rem;
+  letter-spacing: 1px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+}
+.btn-diff:hover {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+}
+.btn-diff.active {
+  background: rgba(57,255,20,0.1);
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+  box-shadow: 0 0 10px rgba(57,255,20,0.3);
+}
+
+/* Primary CTA button */
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  background: var(--neon-green);
+  color: var(--bg);
+  border-radius: var(--radius-sm);
+  transition: box-shadow 0.2s, transform 0.1s;
+  text-transform: uppercase;
+}
+.btn-primary:hover {
+  box-shadow: var(--glow-green);
+  transform: translateY(-2px);
+}
+.btn-primary:active { transform: translateY(0); }
+
+/* Secondary button */
+.btn-secondary {
+  width: 100%;
+  padding: 14px;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  background: transparent;
+  color: var(--neon-cyan);
+  border: 1px solid var(--neon-cyan);
+  border-radius: var(--radius-sm);
+  transition: box-shadow 0.2s, transform 0.1s;
+  text-transform: uppercase;
+}
+.btn-secondary:hover {
+  box-shadow: var(--glow-cyan);
+  transform: translateY(-2px);
+}
+
+/* Icon button (pause) */
+.btn-icon {
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: color 0.2s, text-shadow 0.2s;
+}
+.btn-icon:hover { color: var(--neon-cyan); text-shadow: var(--glow-cyan); }
+
+.hs-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.hs-value {
+  font-size: 0.9rem;
+  color: var(--neon-yellow);
+  text-shadow: 0 0 8px var(--neon-yellow);
+}
+
+.hint {
+  font-size: 0.45rem;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+  text-align: center;
+}
+
+/* ── 8. HUD ───────────────────────────────────────────────── */
+.hud {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: min(520px, 96vw);
+  padding: 8px 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
+}
+.hud-item { display: flex; flex-direction: column; align-items: center; flex: 1; }
+.hud-label { font-size: 0.38rem; color: var(--text-dim); letter-spacing: 2px; }
+.hud-value { font-size: 0.75rem; color: var(--neon-green); text-shadow: var(--glow-green); margin-top: 2px; }
+
+/* ── 9. Canvas frame ──────────────────────────────────────── */
+.canvas-frame {
+  position: relative;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--neon-green);
+  box-shadow: var(--glow-green), inset 0 0 20px rgba(57,255,20,0.05);
+  overflow: hidden;
+  line-height: 0; /* removes bottom gap from canvas */
+}
+
+#game-canvas {
+  display: block;
+  /* size is set by JS */
+}
+
+/* ── 10. Canvas overlay (pause) ───────────────────────────── */
+.canvas-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: rgba(5,11,18,0.82);
+  backdrop-filter: blur(4px);
+  transition: opacity 0.25s;
+}
+.canvas-overlay.hidden { opacity: 0; pointer-events: none; }
+.overlay-title {
+  font-size: 1.4rem;
+  color: var(--neon-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+/* ── 11. D-pad mobile controls ────────────────────────────── */
+.dpad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 14px;
+}
+.dpad-row { display: flex; gap: 4px; }
+
+.dpad-btn {
+  width: 52px;
+  height: 52px;
+  background: rgba(0,245,255,0.08);
+  border: 1px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  font-size: 1.1rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, box-shadow 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.dpad-btn:active {
+  background: rgba(0,245,255,0.2);
+  box-shadow: var(--glow-cyan);
+}
+
+/* Hide d-pad on desktop (pointer: fine = mouse) */
+@media (pointer: fine) { .dpad { display: none; } }
+
+/* ── 12. Game-over screen ─────────────────────────────────── */
+.go-title {
+  font-size: clamp(2.2rem, 9vw, 4rem);
+  text-align: center;
+  line-height: 1.3;
+  color: var(--neon-pink);
+  text-shadow: var(--glow-pink);
+  animation: shake 0.5s ease-out;
+}
+@keyframes shake {
+  0%  { transform: translateX(-8px); }
+  25% { transform: translateX(8px); }
+  50% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+  100%{ transform: translateX(0); }
+}
+
+.go-stats {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 28px;
+  width: min(380px, 92vw);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.stat-value { font-size: 0.9rem; color: var(--neon-green); }
+
+.hs-badge {
+  text-align: center;
+  font-size: 0.6rem;
+  color: var(--neon-yellow);
+  text-shadow: 0 0 10px var(--neon-yellow);
+  animation: badge-pop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.hs-badge.hidden { display: none; }
+@keyframes badge-pop {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* ── 13. Leaderboard ──────────────────────────────────────── */
+.leaderboard {
+  width: min(380px, 92vw);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+}
+.lb-title {
+  text-align: center;
+  margin-bottom: 12px;
+  color: var(--neon-purple);
+  text-shadow: 0 0 8px var(--neon-purple);
+}
+#lb-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+#lb-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.5rem;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.03);
+}
+#lb-list li:first-child {
+  color: var(--neon-yellow);
+  text-shadow: 0 0 6px var(--neon-yellow);
+}
+#lb-list li .lb-rank  { color: var(--text-dim); }
+#lb-list li .lb-score { color: inherit; }
+
+/* ── 14. Go-actions ───────────────────────────────────────── */
+.go-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(380px, 92vw);
+}
+
+/* ── 15. Utility ──────────────────────────────────────────── */
+.hidden { display: none !important; }
+
+/* ── 16. Scrollbar (just in case) ────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--neon-green); border-radius: 3px; }
+
+/* ── 17. Small phone adjustments ─────────────────────────── */
+@media (max-height: 700px) {
+  .logo      { font-size: 1.6rem; }
+  .menu-box  { padding: 16px 18px; gap: 14px; }
+  .go-title  { font-size: 2rem; }
+  .dpad-btn  { width: 44px; height: 44px; }
+}

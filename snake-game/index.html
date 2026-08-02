@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Neon Snake – a retro arcade snake game with glowing effects, power-ups, and local high scores." />
+  <title>Neon Snake</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Press Start 2P: pixel/arcade font from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN WRAPPER – everything sits inside here
+  ════════════════════════════════════════════ -->
+  <div class="wrapper">
+
+    <!-- ── CRT scanline overlay (pure CSS effect) ── -->
+    <div class="crt-overlay" aria-hidden="true"></div>
+
+    <!-- ══════════════════════════════
+         START SCREEN
+    ══════════════════════════════ -->
+    <div id="screen-start" class="screen active">
+      <h1 class="logo">NEON<br /><span>SNAKE</span></h1>
+
+      <div class="menu-box">
+        <!-- Difficulty selector -->
+        <div class="difficulty-group">
+          <label class="pixel-label">DIFFICULTY</label>
+          <div class="btn-group" role="group" aria-label="Select difficulty">
+            <button id="btn-easy" class="btn-diff active" data-diff="easy">EASY</button>
+            <button id="btn-medium" class="btn-diff" data-diff="medium">MEDIUM</button>
+            <button id="btn-hard" class="btn-diff" data-diff="hard">HARD</button>
+          </div>
+        </div>
+
+        <!-- Mode selector -->
+        <div class="difficulty-group">
+          <label class="pixel-label">MODE</label>
+          <div class="btn-group" role="group" aria-label="Select mode">
+            <button id="btn-classic" class="btn-diff active" data-mode="classic">CLASSIC</button>
+            <button id="btn-obstacles" class="btn-diff" data-mode="obstacles">OBSTACLES</button>
+          </div>
+        </div>
+
+        <button id="btn-start" class="btn-primary">▶ START</button>
+
+        <!-- High-score display -->
+        <div class="hs-display">
+          <span class="pixel-label">BEST&nbsp;</span>
+          <span id="start-hs" class="hs-value">0</span>
+        </div>
+      </div>
+
+      <!-- Instructions -->
+      <p class="hint">
+        ↑↓←→ / WASD · P = pause
+      </p>
+    </div>
+
+    <!-- ══════════════════════════════
+         GAME SCREEN
+    ══════════════════════════════ -->
+    <div id="screen-game" class="screen">
+
+      <!-- Top HUD bar -->
+      <div class="hud">
+        <div class="hud-item">
+          <span class="hud-label">SCORE</span>
+          <span id="hud-score" class="hud-value">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">BEST</span>
+          <span id="hud-best" class="hud-value">0</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">LVL</span>
+          <span id="hud-level" class="hud-value">1</span>
+        </div>
+        <button id="btn-pause" class="btn-icon" aria-label="Pause game">⏸</button>
+      </div>
+
+      <!-- Canvas wrapper (glowing border effect) -->
+      <div class="canvas-frame">
+        <canvas id="game-canvas"></canvas>
+
+        <!-- Pause overlay (shown over canvas) -->
+        <div id="pause-overlay" class="canvas-overlay hidden">
+          <p class="overlay-title">PAUSED</p>
+          <button id="btn-resume" class="btn-primary">▶ RESUME</button>
+        </div>
+      </div>
+
+      <!-- Mobile touch D-pad -->
+      <div class="dpad" aria-label="Directional controls">
+        <button id="d-up" class="dpad-btn up" aria-label="Up">▲</button>
+        <div class="dpad-row">
+          <button id="d-left" class="dpad-btn left" aria-label="Left">◀</button>
+          <button id="d-down" class="dpad-btn down" aria-label="Down">▼</button>
+          <button id="d-right" class="dpad-btn right" aria-label="Right">▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════
+         GAME-OVER SCREEN
+    ══════════════════════════════ -->
+    <div id="screen-gameover" class="screen">
+      <h2 class="go-title">GAME<br />OVER</h2>
+
+      <div class="go-stats">
+        <div class="stat-row">
+          <span class="pixel-label">SCORE</span>
+          <span id="go-score" class="stat-value">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="pixel-label">BEST</span>
+          <span id="go-best" class="stat-value">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="pixel-label">LEVEL</span>
+          <span id="go-level" class="stat-value">1</span>
+        </div>
+        <div id="new-hs-badge" class="hs-badge hidden">🏆 NEW BEST!</div>
+      </div>
+
+      <!-- Leaderboard (top 5 from localStorage) -->
+      <div class="leaderboard">
+        <p class="pixel-label lb-title">LEADERBOARD</p>
+        <ol id="lb-list"></ol>
+      </div>
+
+      <div class="go-actions">
+        <button id="btn-restart" class="btn-primary">↺ PLAY AGAIN</button>
+        <button id="btn-mainmenu" class="btn-secondary">⌂ MENU</button>
+      </div>
+    </div>
+
+  </div><!-- /wrapper -->
+
+  <script src="script.js"></script>
+</body>
+
+</html>
